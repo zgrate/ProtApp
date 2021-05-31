@@ -1,0 +1,113 @@
+#:kivy 2.0.0
+
+<PaintingMode>:
+    GridLayout:
+        size: (root.width, root.height)
+        cols:1
+        rows:3
+        GridLayout:
+            size_hint: (1, 0.1)
+            rows:1
+            BoxLayout:
+                padding: 5
+                orientation: 'vertical'
+                ImageButton:
+                    id: pen_button
+                    text: "Pen"
+                    source: "images/paint/pen.png"
+                    opacity: 1
+                    on_press: root.pen_click()
+            BoxLayout:
+                padding: 5
+                orientation: 'vertical'
+                ImageButton:
+                    id: eraser_button
+                    text: "Eraser"
+                    source: "images/paint/eraser.png"
+                    opacity: 0.1
+                    on_press: root.eraser_click()
+            BoxLayout:
+                padding: 5
+                ImageButton:
+                    text: "ColorPicker"
+                    on_press: app.commander.color_pick(root.color)
+                    source: "images/paint/colorwheel.png"
+#            BoxLayout:
+#                padding: 5
+#                orientation: 'vertical'
+#                ImageButton:
+#                    id: prev_arrow
+#                    source: "images/paint/previous.png"
+#                    opacity: 0.1
+#                    on_press: root.back_arrow()
+#            BoxLayout:
+#                padding: 5
+#                orientation: 'vertical'
+#                ImageButton:
+#                    id: next_arrow
+#                    text: "next"
+#                    source: "images/paint/next.png"
+#                    opacity: 0.1
+#                    on_press: root.forward_arrow()
+            BoxLayout:
+                padding: 5
+                orientation: 'vertical'
+                ImageButton:
+                    text: "Erase"
+                    source: "images/file_manager/delete.png"
+                    on_press: root.erase_all()
+            BoxLayout:
+                padding: 5
+                orientation: "vertical"
+                ImageButton:
+                    text: "Exit"
+                    source: "images/exit.png"
+                    on_press: app.commander.main_menu()
+#        GridLayout:
+#            rows: 1
+#            padding: 5
+#            size_hint: (1, 0.1)
+#            BoxLayout:
+#                size_hint: (0.2, 1)
+#                orientation: "vertical"
+#                Label:
+#                    text: "Frames:"
+#                Label:
+#                    id: frames_text
+#                    text: "1/1"
+#            BoxLayout:
+#                Button:
+#                    text:"nextFrame"
+#                Button:
+#                    text:"PrevFrame"
+#                Button:
+#                    text:"DuplicateFrame"
+#                Button:
+#                    text:"RemoveFrame"
+        FloatLayout:
+            id: print_area
+            on_size: root.on_resize()
+
+
+
+<ColorPickerObject>:
+    GridLayout:
+        size: (root.width, root.height)
+        cols:1
+        ColorPicker:
+            id:color_picker
+            text:"Tst"
+            size: (root.width, root.height)
+        GridLayout:
+            spacing:10
+            padding: 5
+            cols:2
+            size_hint: (1, 0.1)
+            ImageButton:
+                source: "images/accept.png"
+                text: "OK"
+                on_press: app.commander.accept_color(root.ids['color_picker'].color)
+            ImageButton:
+                source: "images/decline.png"
+                text: "DISCARD"
+                on_press: app.commander.deny_color()

@@ -1,0 +1,84 @@
+#:kivy 1.1.0
+
+<RemoteFileManagerWidget>:
+    GridLayout:
+        size_hint: (1,1)
+        size: (root.width, root.height)
+        rows: 3
+        GridLayout:
+            rows:1
+            size_hint: (1, 0.1)
+            padding: 5
+            ImageButton:
+                source: "images/file_manager/newfolder.png"
+                allow_stretch: True
+                text: 'New dir'
+                on_release: root.show_new_dir()
+#            Button:
+#                text: 'Move file'
+#                on_release: root.show_save()
+#            Button:
+#                text: 'Copy File'
+#                on_release: root.show_save()
+            ImageButton:
+                id: delete_button
+                source: "images/file_manager/delete.png"
+                opacity: 1
+                text: 'Delete File'
+                disabled: True
+                on_release: root.delete_file()
+#            Button:
+#                text: 'Rename file'
+#                on_release: root.show_save()
+            ImageButton:
+                id: download_button
+                source: "images/file_manager/download.png"
+                text: 'Download File'
+                on_release: root.download_file()
+            ImageButton:
+                text: 'Upload File'
+                source: "images/file_manager/upload.png"
+                on_release: root.upload_file()
+            ImageButton:
+                text: "Back"
+                source: "images/exit.png"
+                on_release: root.show_exit()
+
+        RemoteFileManager:
+            id: rfm
+            dirselect: True
+            path: "/"
+            show_errors: True
+            on_submit: root.submit()
+            on_entries_cleared: root.disable_buttons()
+
+
+<NewDir@Popup>:
+    text_input: text_input
+    title: "Create New Dir"
+    size_hint: (0.5, 0.5)
+    auto_dismiss: False
+    GridLayout:
+        cols: 1
+        padding: 5
+        Label:
+            text: "Type in new dir to create"
+            size_hint: (1, 0.1)
+        TextInput:
+            id: text_input
+            size_hint_y: 0.05
+            multiline: False
+            padding: 5
+
+        GridLayout:
+            size_hint_y: 0.1
+            rows: 1
+            padding: 5
+            ImageButton:
+                source: "images/accept.png"
+                text: "Save"
+                on_release: root.accept(text_input.text)
+            ImageButton:
+                source: "images/decline.png"
+                text: "Cancel"
+                on_release: root.dismiss()

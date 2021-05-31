@@ -1,0 +1,124 @@
+#:kivy 2.0.0
+
+<Widget>:
+    font_name: "data/Audiowide-Regular.ttf"
+
+
+<Loading@ModalView>:
+    auto_dismiss: False
+    size_hint: (0.4, 0.4)
+    separator_height: 0
+
+    Label:
+        id: loading_text
+        center: 0.5, 1
+        text: "Loading.."
+        halign: "center"
+        valign: "top"
+        padding: (5, 5)
+        size: self.texture_size
+#    Image:
+#        source: "images/loading.gif"
+#        allow_stretch: True
+#        anim_loop: 0
+
+
+<AskDisconnect@Popup>:
+    title: "Do you want to disconnect?"
+    size_hint: (0.5, 0.5)
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: "Do you want to disconnect from the machine?"
+            font_size: 13
+        BoxLayout:
+            size_hint: (1, 0.5)
+            orientation: "horizontal"
+            ImageButton:
+                source: "images/accept.png"
+                on_release: app.disconnect(root)
+            ImageButton:
+                source: "images/decline.png"
+
+
+<MainMenu>:
+
+    GridLayout:
+        size:(root.width, root.height)
+        cols: 1
+        BoxLayout:
+            padding: 5
+            size_hint: 1, 0.2
+            Label:
+                base_font_size: 50
+                text: "ProtApp - Visor Control Center"
+
+        GridLayout:
+            padding: 2
+            spacing: 5
+            cols: 1
+            pos_hint: 0.5, 0.5
+            AnchorLayout:
+                ImageButton:
+                    allow_stretch: True
+                    id: ctrl_button
+                    text: "Control Menu"
+                    source: "data/button3.png"
+                    size_hint: 0.7, 1
+                    on_release: app.commander.ask_disconnect()
+                Label:
+                    id: connection_label
+                    text: "> Connected to "
+                    font_name: "data/Audiowide-Regular.ttf"
+                    font_size: sp(13)
+                    color: (0,0,1,1)
+
+            AnchorLayout:
+                ImageButton:
+                    allow_stretch: True
+                    id: ctrl_button
+                    text: "Control Menu"
+                    source: "data/button.png"
+                    size_hint: 0.7, 1
+                    on_press: app.commander.home_menu_press()
+                Label:
+                    text: "> Home"
+                    font_name: "data/Audiowide-Regular.ttf"
+                    font_size: 20
+                    color: (0,0,1,1)
+            AnchorLayout:
+                ImageButton:
+                    size_hint: 0.7, 1
+                    on_press: app.commander.creator_mode_press(True)
+                    source: "data/button2.png"
+                    allow_stretch: True
+                Label:
+                    text: "> Live mode"
+                    font_name: "data/Audiowide-Regular.ttf"
+                    font_size: 20
+                    color: (0,0,1,1)
+            AnchorLayout:
+                ImageButton:
+                    size_hint: 0.7, 1
+                    on_press: app.commander.file_manager_press()
+                    source: "data/button2.png"
+                    allow_stretch: True
+                Label:
+                    text: "> File Manager"
+                    font_name: "data/Audiowide-Regular.ttf"
+                    font_size: 20
+                    color: (0,0,1,1)
+            AnchorLayout:
+                ImageButton:
+                    size_hint: 0.7, 1
+                    on_press: app.commander.exit()
+                    source: "data/button2.png"
+                    allow_stretch: True
+                Label:
+                    text: "> Exit"
+                    font_name: "data/Audiowide-Regular.ttf"
+                    font_size: 20
+                    color: (0,0,1,1)
+
+
+

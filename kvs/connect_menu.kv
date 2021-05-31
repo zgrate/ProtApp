@@ -1,0 +1,35 @@
+#:kivy 2.0.0
+
+
+<ConnectMenu>:
+    GridLayout:
+        size: (root.width, root.height)
+        rows: 2
+        cols: 1
+        AnchorLayout:
+            size_hint: (0.5, 1)
+            center: (0.5, 0.5)
+            SelectableList:
+                id: list_addresses
+                text: "TEST"
+        GridLayout:
+            rows: 1
+            size_hint: (1, 0.2)
+            padding: 5
+            ImageButton:
+                id: accept_button
+                source: "images/accept.png"
+                text: "Accept!"
+                disabled: True
+                size: (128,128)
+                allow_stretch: False
+                opacity: 0.2
+                on_release: root.accept_button()
+            ImageButton:
+                text: "Rescan"
+                source: "images/refresh.png"
+                on_release: root.rescan_button()
+            ImageButton:
+                source: "images/edit.png"
+                text: "Manual IP"
+                on_release: root.manual_ip_popout()

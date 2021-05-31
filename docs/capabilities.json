@@ -1,0 +1,90 @@
+{
+
+	"global_settings":
+	{
+		"maxFPS": 30,
+		"maxEventResolutionSecond": 0.5,
+		"maxPacketSize": 64000
+	},
+
+	"properties":
+	{
+
+	},
+
+	"screens":[
+		{
+			"id": 0,
+			"type": 1,
+			"liveMode": true,
+			"settings":
+			{
+				"count": 1,
+				"sizeX": 128,
+				"sizeY": 32,
+				"density": 2.5,
+				"colors": 1
+			}
+		},
+		{
+			"id": 1,
+			"type": 2,
+			"liveMode": false,
+			"settings":
+			{
+				"count": 2,
+				"sizeX": 128,
+				"sizeY": 32,
+				"density": 2.5,
+				"colors": 2,
+				"bulk_mode": 2
+			}
+		}
+
+	],
+	"sensor": [
+		{
+			"id": 0,
+			"type": 1,
+			"subscribable": true,
+			"settings":
+			{
+
+				"temperature": true,
+				"humidity": true
+			}
+		},
+		{
+			"id": 1,
+			"type": 2,
+			"subscribable": true,
+			"settings": {
+			}
+		}
+	],
+	"controls":
+	[
+		{
+			"id": 0,
+			"type": 1,
+			"settings": {
+				"canBeDisabled": false,
+				"resolution": 100
+			}
+
+		},
+		{
+			"id": 1,
+			"type": 6,
+			"settings": {
+				"textMode": {
+					"numberOfLines": 4,
+					"linesLength": 16
+				}
+
+
+			}
+		}
+	]
+
+}

@@ -1,0 +1,105 @@
+#:kivy 2.0.0
+
+
+<Home>:
+    ImageButton:
+        source: "images/exit.png"
+        size_hint: (0.1, 0.1)
+        size: (100, 100)
+        allow_stretch: True
+        pos: 0, root.height-self.size[1]
+        on_release: root.exit_click()
+
+    GridLayout:
+        size:(root.width, root.height)
+        cols: 1
+        BoxLayout:
+            padding: 5
+            Label:
+                id: connection_label
+                font_name: "data/Audiowide-Regular.ttf"
+                text: "Connected to:\nVISS_ZGRATE_NULL"
+        GridLayout:
+            rows: 1
+            AnchorLayout:
+                ImageButton:
+                    allow_stretch: True
+                    id: ctrl_button
+                    text: "Control Menu"
+                    source: "data/button3.png"
+                    size_hint: 0.9, 1
+                    on_press: root.refresh_voltage_curr()
+                Label:
+                    id: vc_label
+                    text: "Voltage: 0V, Current: 0A"
+                    font_name: "data/Audiowide-Regular.ttf"
+                    font_size: 20
+                    color: (0,0,1,1)
+            AnchorLayout:
+                ImageButton:
+                    allow_stretch: True
+                    id: ctrl_button
+                    text: "Control Menu"
+                    source: "data/button3.png"
+                    size_hint: 0.9, 1
+                    on_press: root.refresh_temperature()
+                Label:
+                    id: temp_label
+                    text: "Temperature: 0C, Humidity: 0%"
+                    font_name: "data/Audiowide-Regular.ttf"
+                    font_size: 20
+                    color: (0,0,1,1)
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "Fan speed"
+                font_size: 20
+                font_name: "data/Audiowide-Regular.ttf"
+
+            Slider:
+                id: fan_speed_slider
+                max: 100
+                min: 5
+                step: 5
+                value: 50
+                on_value: root.fan_speed_value_change(self.value)
+            Label:
+                text: str(int(fan_speed_slider.value))
+                font_size: 20
+                font_name: "data/Audiowide-Regular.ttf"
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "Brigthness"
+                font_size: 20
+                font_name: "data/Audiowide-Regular.ttf"
+
+            Slider:
+                id: brightness_slider
+                max: 10
+                min: 0
+                step: 1
+                value: 5
+                on_value: root.main_brightness_value_change(self.value_normalized)
+            Label:
+                text: str(int(brightness_slider.value))
+                font_size: 20
+                font_name: "data/Audiowide-Regular.ttf"
+
+#        AnchorLayout:
+#            size_hint: 0.5, 1
+#            Knob:
+#                size: 100, 100
+#                min: 0
+#                max: 100
+#                step: 1
+#                value: 0  # Default position of knob.
+#                knobimg_source: "img/knob_metal.png"  # Knob texture
+#                show_label: True  # Show central label
+#                show_marker: True  # Show surrounding marker
+#                marker_img: "img/bline.png" # Marker texture image
+#                knob_size: 0.9  # Scales knob size to leave space for marker
+#                markeroff_color: 0, 0, 0, 0
+#                marker_ahead: 1
+#                marker_startangle: 1
+
