@@ -18,10 +18,10 @@ __version__ = '0.2'
 import math
 
 from kivy.lang import Builder
-from kivy.uix.widget import Widget
-from kivy.properties import NumericProperty, ObjectProperty, StringProperty, \
+from kivy.properties import NumericProperty, StringProperty, \
     BooleanProperty, ReferenceListProperty, BoundedNumericProperty, \
     ListProperty
+from kivy.uix.widget import Widget
 
 Builder.load_string('''
 #

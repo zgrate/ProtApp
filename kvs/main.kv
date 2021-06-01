@@ -39,6 +39,7 @@
                 on_release: app.disconnect(root)
             ImageButton:
                 source: "images/decline.png"
+                on_release: root.dismiss()
 
 
 <MainMenu>:
@@ -48,13 +49,14 @@
         cols: 1
         BoxLayout:
             padding: 5
-            size_hint: 1, 0.2
-            Label:
+            size_hint: 1, 0.3
+            Image:
+                source: "images/splash.png"
                 base_font_size: 50
                 text: "ProtApp - Visor Control Center"
 
         GridLayout:
-            padding: 2
+            padding: 3
             spacing: 5
             cols: 1
             pos_hint: 0.5, 0.5
@@ -119,6 +121,9 @@
                     font_name: "data/Audiowide-Regular.ttf"
                     font_size: 20
                     color: (0,0,1,1)
+            Label:
+                size_hint: 1, 0.2
+                text: "Version 1 Alpha"
 
 
 

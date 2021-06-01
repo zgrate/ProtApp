@@ -1,19 +1,13 @@
-from asyncio import Future
-
-from kivy.lang import Builder
-from kivy.uix.widget import Widget
-from kivy.uix.popup import Popup
-from kivy.uix.label import Label
-from threading import Thread
-from utils.configuration import CONFIGURATION
-from networking.networkhelper import network_scan, ping_check
-import asyncio
-from kivy.app import App
-from networking.networkhelper import get_host
-from kivy.logger import Logger
-
 import re
+
+from kivy.app import App
+from kivy.lang import Builder
+from kivy.logger import Logger
+from kivy.uix.popup import Popup
+from kivy.uix.widget import Widget
+
 from networking.networkthread import NETWORK_INTERFACE
+from utils.configuration import CONFIGURATION
 from widgets.mainmenu import Loading, InfoPopup
 
 Builder.load_string("<PleaseWaitPopup@Popup>:\n"
@@ -54,12 +48,14 @@ Builder.load_string("<ManualIPPopout@Popup>:\n"
                     "         padding: 5\n"
                     "         rows:1\n"
                     "         size_hint: (1, 0.3)\n"
-                    "         Button:\n"
+                    "         ImageButton:\n"
                     "            size_hint: (1, 0.2)\n"
+                    "            source: 'images/accept.png'\n"
                     "            text: 'Connect'\n"
                     "            on_release: root.connect()\n"
-                    "         Button:\n"
+                    "         ImageButton:\n"
                     "            on_release: root.cancel()\n"
+                    "            source: 'images/decline.png'\n"
                     "            size_hint: (1, 0.2)\n"
                     "            text: 'Cancel'")
 
@@ -76,6 +72,7 @@ class ManualIPPopout(Popup):
         self.dismiss()
 
     def cancel(self):
+        self.dismiss()
         Logger.info("ConnectMenu: Canceled manual IP Input!")
 
 
@@ -95,6 +92,10 @@ class PleaseWaitPopup(Popup):
 
 
 class ConnectMenu(Widget):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.has_finished = False
 
     def rescan_button(self):
         self.scan()
@@ -141,7 +142,8 @@ class ConnectMenu(Widget):
         self.ids["accept_button"].disabled = False
         self.ids["accept_button"].opacity = 1
 
-    def manual_ip_popout(self):
+    @staticmethod
+    def manual_ip_popout():
         popout = ManualIPPopout(connect_callback=connect_with_popout)
         popout.open()
 
@@ -153,10 +155,11 @@ def connect_with_popout(ip: str, show_error: bool = True, error_callback=None):
         ip = sp[0]
         port = int(sp[1])
 
-    if error_callback is None:
-        def error():
-            InfoPopup(title="Error!", text="Error connecting!\nReason: Connection timeout!").open()
-        error_callback = error
+    # if error_callback is None:
+    #     def error():
+    #         InfoPopup(title="Error!", text="Error connecting!\nReason: Connection timeout!").open()
+    #
+    #     error_callback = error
 
     global connect_finished
     connect_finished = False
@@ -164,16 +167,16 @@ def connect_with_popout(ip: str, show_error: bool = True, error_callback=None):
     def internal_accept_callback(_, response=""):
         global connect_finished
         connect_finished = True
-        Logger.info("ConnectMenu: Connection completed! Result: " + str(response))
+        Logger.info("ConnectMenu: Connection completed! Result:\n" + str(response))
         if response == "ok":
             CONFIGURATION["last_connection"] = {"last_ip": ip}
             App.get_running_app().manager.show_main_menu()
             return
         del CONFIGURATION["last_connection"]
         if show_error:
-            InfoPopup(title="Error!", text="Error connecting!\nReason: " + str(response)).open()
+            InfoPopup(title="Error!", text="Error connecting! Reason:\n" + str(response)).open()
         if error_callback is not None:
             error_callback()
 
-    Loading(lambda: NETWORK_INTERFACE.connect_socket(internal_accept_callback, ip, port), lambda:connect_finished, error_callback, 6, "Connecting to " + str(ip)).open(True)
-    NETWORK_INTERFACE.connect_socket(internal_accept_callback, ip, port)
+    Loading(lambda: NETWORK_INTERFACE.connect_socket(internal_accept_callback, ip, port), lambda: connect_finished,
+            error_callback, 6, "Connecting to " + str(ip)).open(True)

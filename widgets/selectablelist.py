@@ -1,11 +1,11 @@
 from kivy.lang import Builder
-from kivy.uix.recycleview import RecycleView
-from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.uix.label import Label
 from kivy.properties import BooleanProperty
-from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
+from kivy.uix.label import Label
+from kivy.uix.recycleboxlayout import RecycleBoxLayout
+from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
+from kivy.uix.recycleview.views import RecycleDataViewBehavior
 
 Builder.load_file("kvs/selectable_list.kv")
 
@@ -49,8 +49,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 class SelectableList(RecycleView):
     def __init__(self, **kwargs):
         super(SelectableList, self).__init__(**kwargs)
-      #  self.data = [{'text': str(x)} for x in range(2)]
-       # self.returnMethod = lambda d : print("Clicked " + str(d))
+        self.returnMethod = None
 
     def set_data_on_pos(self, index, text):
         self.data[index] = {'text': str(text)}

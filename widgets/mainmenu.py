@@ -12,9 +12,11 @@ from utils.configuration import CONFIGURATION
 class AskDisconnect(Popup):
     pass
 
+
 class InfoPopup(Popup):
     def __init__(self, title="Info", text="Information!", **kwargs):
         super().__init__(title=title, size_hint=(0.4, 0.4), content=Label(text=text), **kwargs)
+
 
 class Loading(ModalView):
     def __init__(self, to_execute, response_waiter, error_callback, wait_time, loading_text="Loading...", **kwargs):
@@ -25,7 +27,6 @@ class Loading(ModalView):
         self.error_callback = error_callback
         self.wait_time = wait_time
         self.ids["loading_text"].text = loading_text
-
 
     def _task(self):
         self.to_execute()
@@ -44,11 +45,13 @@ class Loading(ModalView):
             Thread(target=self._task).start()
         else:
             self._task()
+
     pass
 
 
 class MainMenu(Widget):
 
     def on_open(self):
-        self.ids["connection_label"].text = "Connected to:\n"+CONFIGURATION.get_device_name()
+        self.ids["connection_label"].text = "Connected to:\n" + CONFIGURATION.get_device_name()
+
     pass

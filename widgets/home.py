@@ -3,7 +3,6 @@ from kivy.uix.widget import Widget
 
 from networking.networkthread import NETWORK_INTERFACE
 from utils.configuration import CONFIGURATION
-from widgets import knob
 from widgets.mainmenu import Loading
 
 
@@ -49,9 +48,9 @@ class Home(Widget):
         NETWORK_INTERFACE.set_fans(value)
 
     def main_brightness_value_change(self, value):
-        NETWORK_INTERFACE.set_main_brightness(value*255)
+        NETWORK_INTERFACE.set_main_brightness(value * 255)
 
     def on_open(self):
         self.fan_speed_value_change(self.ids["fan_speed_slider"].value)
         self.main_brightness_value_change(self.ids["brightness_slider"].value_normalized)
-        self.ids["connection_label"].text = "Connected to:\n"+CONFIGURATION.get_device_name()
+        self.ids["connection_label"].text = "Connected to:\n" + CONFIGURATION.get_device_name()

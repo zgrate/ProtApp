@@ -1,5 +1,4 @@
 from kivy.config import Config
-from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import ButtonBehavior
 from kivy.uix.image import Image
@@ -21,6 +20,7 @@ Builder.load_file("kvs/remotefilemanager.kv")
 
 Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 
+
 async def test():
     print("EXTERNAL!")
     await asyncio.sleep(1)
@@ -40,8 +40,6 @@ class InterfaceManager(BoxLayout):
         self.clear_widgets()
         self.add_widget(self.main_menu)
         self.main_menu.on_open()
-
-
 
     def show_file_manager(self):
         self.clear_widgets()
@@ -115,9 +113,7 @@ class CommandsDispatcher:
         pass
 
 
-
 class MainApp(App):
-
     title = "ProtApp"
 
     icon = "images/icon.jpg"
@@ -156,14 +152,13 @@ class MainApp(App):
     def on_start(self):
 
         if CONFIGURATION.exists("last_connection"):
-            connect_with_popout(CONFIGURATION["last_connection"]["last_ip"], error_callback=self.manager.show_connect_menu, show_error=False)
+            connect_with_popout(CONFIGURATION["last_connection"]["last_ip"],
+                                error_callback=self.manager.show_connect_menu, show_error=False)
         else:
             self.manager.show_connect_menu()
-        #self.manager.show_file_manager()
-        #self.manager.show_main_menu()
+        # self.manager.show_file_manager()
+        # self.manager.show_main_menu()
 
 
 if __name__ == '__main__':
     MainApp().run()
-
-

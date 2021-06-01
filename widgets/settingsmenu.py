@@ -9,4 +9,3 @@ class SettingsMenu(Widget):
         self.store = JsonStore("config.json")
         self.store["test"] = "Testujemy"
         self.store["eleven"] = 11
-

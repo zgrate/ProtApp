@@ -1,8 +1,9 @@
-from threading import Thread
-from kivy.logger import Logger
-from time import sleep
-from random import Random
 import threading
+from random import Random
+from threading import Thread
+from time import sleep
+
+from kivy.logger import Logger
 
 _random = Random()
 _timeout_queue = {}

@@ -1,3 +1,5 @@
+import os
+from os import path
 from threading import Thread
 
 from kivy.app import App
@@ -5,14 +7,11 @@ from kivy.uix.filechooser import FileChooserIconView, FileSystemAbstract
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
-from time import time, sleep
-from os import path
-import os
 from plyer import filechooser
 
 from networking.networkthread import NETWORK_INTERFACE, Logger
-from networking.packets import FileResponseType
 from widgets.mainmenu import Loading, InfoPopup
+
 
 def rfm_debug(text):
     Logger.debug("RemoteFileManager:" + text)
@@ -20,6 +19,7 @@ def rfm_debug(text):
 
 def sanitize_dir(fn):
     return fn.replace("C:\\", "/").replace("\\", "/")
+
 
 class NewDir(Popup):
     def __init__(self, rfmw, **kwargs):
@@ -39,11 +39,13 @@ class RemoteFileManagerWidget(Widget):
 
     def on_open(self):
         self.rfm.on_open()
-      #  self.ids["current_directory"].text = "Directory: " + str(self.rfm.path)
+
+    #  self.ids["current_directory"].text = "Directory: " + str(self.rfm.path)
 
     def on_touch_down(self, touch):
         super().on_touch_down(touch)
-#        self.ids["current_directory"].text = "Directory: " + str(self.rfm.path)
+
+    #        self.ids["current_directory"].text = "Directory: " + str(self.rfm.path)
 
     def submit(self):
         if self.rfm.file_system.is_dir(self.rfm.selection[0]):
@@ -102,12 +104,11 @@ class RemoteFileManagerWidget(Widget):
 
         split = (file.split("."))
         if len(split) > 1:
-            fil = ["."+split[-1]]
+            fil = ["." + split[-1]]
         else:
             fil = []
 
         split2 = file.split("/")
-
 
         def handle_selection(selection):
             if selection is None or len(selection) == 0:
@@ -131,9 +132,11 @@ class RemoteFileManagerWidget(Widget):
             def error_download():
                 Logger.error("RemoteFileManager: File Download error!")
 
-            Loading(lambda: NETWORK_INTERFACE.download(to_download, selection[0], download_finished), lambda: finished, error_download, 30).open(True)
+            Loading(lambda: NETWORK_INTERFACE.download(to_download, selection[0], download_finished), lambda: finished,
+                    error_download, 30).open(True)
 
-        filechooser.save_file(on_selection=handle_selection, path=split2[-1], filters=fil, multiple=False, title="Select download target")
+        filechooser.save_file(on_selection=handle_selection, path=split2[-1], filters=fil, multiple=False,
+                              title="Select download target")
 
     def upload_file(self):
         def handle_selection(selection):
@@ -142,16 +145,15 @@ class RemoteFileManagerWidget(Widget):
 
             def response(response):
                 rfm_debug("Got response " + str(response))
-                InfoPopup("Upload Completed!", "Upload successfull!", on_dismiss=lambda _:self.rfm.update_files()).open()
-                #self.rfm.update_files()
+                InfoPopup("Upload Completed!", "Upload successfull!",
+                          on_dismiss=lambda _: self.rfm.update_files()).open()
+                # self.rfm.update_files()
 
             res = NETWORK_INTERFACE.upload_file(selection[0], sanitize_dir(self.rfm.path), response)
             if res != "ok":
                 InfoPopup("Error", "Error: " + str(res)).open()
-        filechooser.open_file(on_selection=handle_selection,  multiple=False, title="Select file to upload")
 
-
-
+        filechooser.open_file(on_selection=handle_selection, multiple=False, title="Select file to upload")
 
 
 class RemoteFileSystem(FileSystemAbstract):
@@ -161,6 +163,7 @@ class RemoteFileSystem(FileSystemAbstract):
         self.li = []
         self.directory = "/"
         self.last_popup = None
+        self.finished = False
 
     def listdir(self, fn):
         rfm_debug("Listing directory of " + str(fn))
@@ -185,7 +188,8 @@ class RemoteFileSystem(FileSystemAbstract):
                     if isinstance(widget, Popup):
                         self.finished = True
                         return
-                Popup(title="Error!", size_hint=(0.5, 0.4), content=Label(text="Error while retrieving files!\nPlease make sure you set pullups and\nthe SD card is inserted!")).open()
+                Popup(title="Error!", size_hint=(0.5, 0.4), content=Label(
+                    text="Error while retrieving files!\nPlease make sure you set pullups and\nthe SD card is inserted!")).open()
 
 
             else:
@@ -260,4 +264,3 @@ class RemoteFileManager(FileChooserIconView):
     def entry_touched(self, entry, touch):
         super().entry_touched(entry, touch)
         self.parent.parent.enable_buttons()
-

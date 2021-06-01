@@ -127,7 +127,7 @@ class PaintingMode(Widget):
                 self.add_to_history((rect_pos, color_to_draw))
             elif self.mode == DrawingMode.ERASE:
                 self.erase(rect_pos)
-        #self.redraw()
+        # self.redraw()
 
     def on_touch_move(self, touch):
         super().on_touch_move(touch)
@@ -184,7 +184,6 @@ class PaintingMode(Widget):
         if clear_all:
             self.erase_all()
 
-
     def __init__(self, x, y, screen_id=0, live_draw=True, **kwargs):
         super().__init__(**kwargs)
         self.xSize = x
@@ -195,4 +194,3 @@ class PaintingMode(Widget):
         self.mode = DrawingMode.DRAW
         self.live_draw = live_draw
         self.screen_id = screen_id
-

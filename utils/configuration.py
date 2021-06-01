@@ -1,7 +1,8 @@
-from kivy.storage.jsonstore import JsonStore
-from kivy.logger import Logger
 from enum import Enum
 from json import loads
+
+from kivy.logger import Logger
+from kivy.storage.jsonstore import JsonStore
 
 
 class ScreenType(Enum):
@@ -80,14 +81,15 @@ class ConfigStore:
     def exists(self, key):
         return self.store.exists(key)
 
-    def processCapabilities(self, text:str):
+    @staticmethod
+    def processCapabilities(text: str):
         Logger.debug("Configuration: Processing Capabilities...")
-        #TODO
+        # TODO
 
-    def get_device_name(self):
+    @staticmethod
+    def get_device_name():
         return "VISS_ZOS_DEV"
-        #TODO
-
+        # TODO
 
 
 CONFIGURATION = ConfigStore("config.json")

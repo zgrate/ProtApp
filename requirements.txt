@@ -1,0 +1,74 @@
+altgraph==0.17
+appdirs==1.4.4
+backcall @ file:///home/ktietz/src/ci/backcall_1611930011877/work
+buildozer==1.2.0.dev0
+certifi==2020.12.5
+cffi @ file:///C:/ci/cffi_1613247308275/work
+chardet==3.0.4
+colorama @ file:///tmp/build/80754af9/colorama_1607707115595/work
+colorlog==4.0.2
+cryptography @ file:///C:/ci/cryptography_1616769432139/work
+cycler==0.10.0
+decorator @ file:///tmp/build/80754af9/decorator_1617916966915/work
+distlib==0.3.1
+docutils==0.17
+filelock==3.0.12
+future==0.18.2
+idna==2.8
+importlib-metadata==4.0.1
+ipython @ file:///C:/ci/ipython_1617121109687/work
+ipython-genutils @ file:///tmp/build/80754af9/ipython_genutils_1606773439826/work
+jedi==0.17.0
+keyboard==0.13.3
+Kivy==2.0.0
+kivy-deps.angle==0.3.0
+kivy-deps.glew==0.3.0
+kivy-deps.sdl2==0.3.1
+Kivy-examples==2.0.0
+Kivy-Garden==0.1.4
+kiwisolver @ file:///C:/ci/kiwisolver_1612282618948/work
+kthread==0.2.2
+matplotlib @ file:///C:/ci/matplotlib-suite_1613408055530/work
+mkl-fft==1.3.0
+mkl-random @ file:///C:/ci/mkl_random_1618854593605/work
+mkl-service==2.3.0
+netifaces==0.10.9
+numpy==1.18.2
+olefile==0.46
+opencv-python==4.2.0.34
+parso @ file:///tmp/build/80754af9/parso_1617223946239/work
+pefile==2021.5.24
+pexpect==4.8.0
+pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
+Pillow==7.1.1
+plyer==2.0.0
+prompt-toolkit @ file:///tmp/build/80754af9/prompt-toolkit_1616415428029/work
+ptyprocess==0.7.0
+PyAutoGUI==0.9.42
+pycparser @ file:///tmp/build/80754af9/pycparser_1594388511720/work
+PyGetWindow==0.0.9
+Pygments @ file:///tmp/build/80754af9/pygments_1615143339740/work
+pyinstaller==4.3
+pyinstaller-hooks-contrib==2021.1
+PyMsgBox==1.0.9
+pyparsing @ file:///home/linux1/recipes/ci/pyparsing_1610983426697/work
+pypiwin32==223
+PyRect==0.1.4
+PyScreeze==0.1.26
+pystray==0.14.4
+python-dateutil @ file:///home/ktietz/src/ci/python-dateutil_1611928101742/work
+PyTweening==1.0.3
+pywin32==300
+pywin32-ctypes==0.2.0
+requests==2.21.0
+scapy==2.4.3
+sh==1.14.1
+six @ file:///C:/ci/six_1605205426665/work
+tornado @ file:///C:/ci/tornado_1606935947090/work
+traitlets @ file:///home/ktietz/src/ci/traitlets_1611929699868/work
+typing-extensions==3.7.4.3
+urllib3==1.24.3
+virtualenv==20.4.4
+wcwidth @ file:///tmp/build/80754af9/wcwidth_1593447189090/work
+wincertstore==0.2
+zipp==3.4.1
