@@ -1,5 +1,6 @@
 from enum import Enum
 
+import numpy as np
 from kivy.graphics import Color, Line, Rectangle
 from kivy.uix.widget import Widget
 
@@ -100,6 +101,19 @@ class PaintingMode(Widget):
         if self.live_draw:
             NETWORK_INTERFACE.pixel_draw(t, self.screen_id, self.ySize)
 
+    def add_to_history_list(self, list, color):
+        for e in list:
+            t = (e, color)
+            if any(item == t for item in self.drawing_history):
+                continue
+            if self.end_index != 0:
+                self.drawing_history = self.drawing_history[:-self.end_index]
+                self.end_index = 0
+            self.drawing_history.append(t)
+            self.drawRectange(t)
+        if self.live_draw:
+            self.pixels_to_update += [(list, color)]
+
     def erase_all(self):
         self.drawing_history.clear()
         self.end_index = 0
@@ -111,22 +125,27 @@ class PaintingMode(Widget):
         # self.drawing_history = list(filter(lambda pos: pos[0] != rect_pos, self.drawing_history))
         self.add_to_history((rect_pos, BLACK_COLOR))
 
+    def erase_list(self, list):
+        # self.drawing_history = list(filter(lambda pos: pos[0] != rect_pos, self.drawing_history))
+        self.add_to_history_list(list, (BLACK_COLOR))
+
     def widget_touch_event(self, root, x, y, button):
         sizeOfFieldX = root.size[0] / self.xSize
         sizeOfFieldY = root.size[1] / self.ySize
-        rect_pos = int(x / sizeOfFieldX), int(y / sizeOfFieldY)
+        pos = int(x / sizeOfFieldX), int(y / sizeOfFieldY)
         r, g, b, a = self.color
         color_to_draw = (r, g, b, a)
+        l = (self.interpolate(pos)) + [pos]
         if button == "right":
             if self.mode == DrawingMode.DRAW:
-                self.erase(rect_pos)
+                self.erase_list(l)
             elif self.mode == DrawingMode.ERASE:
-                self.add_to_history((rect_pos, color_to_draw))
+                self.add_to_history_list(l, color_to_draw)
         elif button == "left":
             if self.mode == DrawingMode.DRAW:
-                self.add_to_history((rect_pos, color_to_draw))
+                self.add_to_history_list(l, color_to_draw)
             elif self.mode == DrawingMode.ERASE:
-                self.erase(rect_pos)
+                self.erase_list(l)
         # self.redraw()
 
     def on_touch_move(self, touch):
@@ -152,7 +171,13 @@ class PaintingMode(Widget):
             self.widget_touch_event(root, x, y, button)
 
     def on_touch_up(self, touch):
+        self.last_pos = None
         self.redraw()
+        if self.live_draw:
+            print(self.pixels_to_update)
+            NETWORK_INTERFACE.pixel_draw_list_combined(self.pixels_to_update, self.screen_id, self.ySize, False)
+            self.pixels_to_update.clear()
+
 
     def on_resize(self):
         # with self.ids["print_area"].canvas:
@@ -184,6 +209,20 @@ class PaintingMode(Widget):
         if clear_all:
             self.erase_all()
 
+    def interpolate(self, current_pos):
+        last_pos = self.last_pos
+        self.last_pos = current_pos
+        if last_pos is not None:
+            start_x, start_y = current_pos
+            end_x, end_y = last_pos
+            x = [start_x, end_x]
+            y = [start_y, end_y]
+            if start_x > end_x:
+                return list((e, int(np.interp(e, x, y))) for e in range(int(end_x), int(start_x), 1))
+            else:
+                return list((e, int(np.interp(e, x, y))) for e in range(int(start_x), int(end_x), 1))
+        return []
+
     def __init__(self, x, y, screen_id=0, live_draw=True, **kwargs):
         super().__init__(**kwargs)
         self.xSize = x
@@ -194,3 +233,5 @@ class PaintingMode(Widget):
         self.mode = DrawingMode.DRAW
         self.live_draw = live_draw
         self.screen_id = screen_id
+        self.last_pos = None
+        self.pixels_to_update = []

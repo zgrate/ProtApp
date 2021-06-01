@@ -1,18 +1,16 @@
 from concurrent.futures import ThreadPoolExecutor
 from threading import Thread
+from time import sleep, time
+from typing import Callable, Any
 
 from kivy.app import App
+from kivy.logger import LOG_LEVELS
 
 from networking import packetsprocessor
-from networking.packets import *
-from kivy.logger import Logger, LOG_LEVELS
-
 from networking.networkhelper import *
+from networking.packets import *
 from utils.configuration import CONFIGURATION
 from utils.priorityqueue import PriorityQueue
-from time import sleep, time
-
-from typing import Callable, Any
 
 Logger.setLevel(LOG_LEVELS["debug"])
 
@@ -248,7 +246,43 @@ class NetworkInterface:
     def disconnect(self):
         self.net.disconnect_socket()
 
-    def pixel_draw(self, pos_color_tuple, screen_id, height, asynchron=True):
+    def pixel_draw_list_combined(self, list_tuple, screen_id, height, asynchron=True):
+        packet = S09DrawUpdate(screen_id)
+        for e in list_tuple:
+            list, color = e
+            (r, g, b, _) = color
+            r *= 255
+            g *= 255
+            b *= 255
+            Logger.debug("NetworkThread: Drawing pixels with color " + str(r) + " " + str(g) + " " + str(b))
+            for e2 in list:
+                x, y = e2
+                y = height - y
+                packet.add_pixel(pixel=(x, y, int(r), int(g), int(b)))
+        if asynchron:
+            self.net.schedule_future(_make_future(lambda *args, **kwargs: self.net.send_packet(packet)),
+                                     HIGHEST_PRIORITY)
+        else:
+            self.net.send_packet(packet)
+
+    def pixel_draw_list(self, list, color, screen_id, height, asynchron=False):
+        packet = S09DrawUpdate(screen_id)
+        (r, g, b, _) = color
+        r *= 255
+        g *= 255
+        b *= 255
+        Logger.debug("NetworkThread: Drawing pixels with color " + str(r) + " " + str(g) + " " + str(b))
+        for e in list:
+            x, y = e
+            y = height - y
+            packet.add_pixel(pixel=(x, y, int(r), int(g), int(b)))
+        if asynchron:
+            self.net.schedule_future(_make_future(lambda *args, **kwargs: self.net.send_packet(packet)),
+                                     HIGHEST_PRIORITY)
+        else:
+            self.net.send_packet(packet)
+
+    def pixel_draw(self, pos_color_tuple, screen_id, height, asynchron=False):
         (x, y), (r, g, b, _) = pos_color_tuple
         r *= 255
         g *= 255
